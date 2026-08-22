@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Spam Detection</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="container">
+    <h1>📧 Spam Detection System</h1>
+
+    <form action="/predict" method="post">
+        
+        <!-- Textarea (keeps text after submit) -->
+        <textarea 
+            name="message" 
+            placeholder="Enter your message here..." 
+            required>{{ message }}</textarea>
+
+        <button type="submit">Check</button>
+    </form>
+
+    <!-- Show result ONLY after prediction -->
+    {% if prediction_text %}
+        <div class="result {{ 'spam' if prediction_text.startswith('Spam') else 'ham' }}">
+            {{ prediction_text }}
+        </div>
+    {% endif %}
+
+</div>
+
+</body>
+</html>
