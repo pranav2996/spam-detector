@@ -7,9 +7,15 @@ app = Flask(__name__)
 model = pickle.load(open("model.pkl", "rb"))
 vectorizer = pickle.load(open("vectorizer.pkl", "rb"))
 
+
 @app.route('/')
 def home():
-    return render_template('index.html', prediction_text=None, message="")
+    return render_template(
+        'index.html',
+        prediction_text=None,
+        message=""
+    )
+
 
 @app.route('/predict', methods=['POST'])
 def predict():
@@ -18,13 +24,19 @@ def predict():
     data = vectorizer.transform([message])
     prediction = model.predict(data)[0]
 
-    result = "Spam ❌" if prediction == 1 else "Not Spam ✅"
+    # Updated result labels
+    result = (
+        "Phishing Message ❌"
+        if prediction == 1
+        else "Not a Phishing Message ✅"
+    )
 
     return render_template(
         'index.html',
         prediction_text=result,
-        message=message   # 👈 keep message
+        message=message
     )
+
 
 if __name__ == "__main__":
     app.run(debug=True)
